@@ -23,5 +23,9 @@ Zespół w składzie:
 - Flask
 - SQLAlchemy
 
+### Frontend
+- React
+- TypeScript
+- 
 ### Baza danych
 - PostgreSQL
