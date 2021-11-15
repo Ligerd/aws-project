@@ -5,7 +5,7 @@ Zespół w składzie:
 - **Aleksandr Karolik** - aws 
 - **Jakub Korczakowski** - backend + DB
 - **Piotr Jeleniewicz** - frontend
-- **Piotrek Rosa** - backend + DB
+- **Piotr Rosa** - backend + DB
 
 ## Diagram architektury
 ![Alt text](docs/CloudDiagram.png?raw=true "Diagram architektury")
