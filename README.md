@@ -8,10 +8,10 @@ Zespół w składzie:
 - **Piotrek Rosa** - backend + DB
 
 ## Diagram architektury
-![Alt text](docs\CloudDiagram.png?raw=true "Title")
+![Alt text](docs/CloudDiagram.png?raw=true "Diagram architektury")
 
 ## Diagram przypadków użycia
-![Alt text](docs\UseCasesCloud.png?raw=true "Title")
+![Alt text](docs/UseCasesCloud.png?raw=true "Diagram przypadków użycia")
 
 ## Technologie:
 
