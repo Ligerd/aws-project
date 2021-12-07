@@ -1,6 +1,7 @@
 version: '3'
 services:
   postgreDB:
+        container_name: postgreDB
         image: postgres:10.5
         restart: always
         environment:
@@ -20,8 +21,8 @@ services:
   products:
       container_name: products
       build: 
-        context: .
-        dockerfile: ./docker/products/Dockerfile
+        context: ./products
+        dockerfile: Dockerfile
       command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
       volumes:
         - .:/products
@@ -32,6 +33,21 @@ services:
       restart: always
       networks:
         - backend_network
+  customers:
+    container_name: customers
+    build:
+      context: ./customers
+      dockerfile: Dockerfile
+    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
+    volumes:
+      - .:/customers
+    ports:
+      - 8001:8001
+    depends_on:
+      - postgreDB
+    restart: always
+    networks:
+      - backend_network
 volumes:
   postgres-data:
 
