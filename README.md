@@ -20,7 +20,7 @@ Zespół w składzie:
 
 ### Backend:
 - Python3
-- Flask
+- FastAPI
 - SQLAlchemy
 
 ### Frontend
