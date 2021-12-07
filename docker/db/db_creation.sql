@@ -1,9 +1,8 @@
 CREATE DATABASE online_shope
     WITH 
-    OWNER = postgre
+    OWNER = postgres
     ENCODING = 'UTF8'
     CONNECTION LIMIT = -1;
-
 
 CREATE TABLE Products (
 	id serial PRIMARY KEY,
