@@ -1,8 +1,6 @@
 from typing import List
-from typing import Optional
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from fastapi.encoders import jsonable_encoder
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -25,7 +23,6 @@ def read_root():
 
 @app.get("/products/", response_model=List[schemas.Product])
 def read_products(skip: int = 0, limit: int = 100, name: str = "", db: Session = Depends(get_db)):
-# def read_products(db: Session = Depends(get_db), name: Optional[str] = None):
     products = crud.get_products(db, skip=skip, limit=limit, name=name)
     return products
 

@@ -4,7 +4,8 @@ CREATE DATABASE online_shope
     ENCODING = 'UTF8'
     CONNECTION LIMIT = -1;
 
-CREATE TABLE Products (
+
+CREATE TABLE public.Products (
 	id serial PRIMARY KEY,
 	name VARCHAR ( 50 ) UNIQUE NOT NULL,
 	type VARCHAR ( 50 ),
@@ -15,7 +16,7 @@ CREATE TABLE Products (
 	manufacturer varchar (50)
 );
 
-create table Customer(
+create table public.Customer(
 	id serial PRIMARY KEY,
 	name varchar (50) not null,
 	surname varchar (50) not null,
@@ -23,25 +24,26 @@ create table Customer(
 	contact varchar(20)
 );
 
-create table Orders(
+create table public.Orders(
 	id serial PRIMARY KEY,
 	customerId int,
+	detailId int,
 	orderedProducts integer[],
 	totalPrice float8,
-	foreign key (customerId) references Customer(id)
+	foreign key (customerId) references Customer(id),
+	foreign key (detailId) references OrderDetails(id)
 );
 
 
-create table OrderDetails(
+create table public.OrderDetails(
 	detailId serial PRIMARY KEY,
- 	orderId int,
 	orderDate timestamp,
-	shipmentDate timestamp,
+	shipmentDate timestamp null,
 	shipmentStatus varchar(50),
 	foreign key (orderId) references Orders(id)
 );
 
-create table Delivery(
+create table public.Delivery(
 	id serial PRIMARY KEY,
 	orderId int,
 	city varchar(50),
