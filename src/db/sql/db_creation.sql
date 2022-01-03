@@ -27,16 +27,15 @@ create table public.Customer(
 create table public.Orders(
 	id serial PRIMARY KEY,
 	customerId int,
-	detailId int,
 	orderedProducts integer[],
 	totalPrice float8,
 	foreign key (customerId) references Customer(id),
-	foreign key (detailId) references OrderDetails(id)
 );
 
 
 create table public.OrderDetails(
 	detailId serial PRIMARY KEY,
+	orderId int,
 	orderDate timestamp,
 	shipmentDate timestamp null,
 	shipmentStatus varchar(50),

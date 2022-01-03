@@ -48,6 +48,21 @@ services:
     restart: always
     networks:
       - backend_network
+  orders:
+    container_name: orders
+    build:
+      context: ./orders
+      dockerfile: Dockerfile
+    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload"
+    volumes:
+      - .:/orders
+    ports:
+      - 8002:8002
+    depends_on:
+      - postgreDB
+    restart: always
+    networks:
+      - backend_network
 volumes:
   postgres-data:
 
