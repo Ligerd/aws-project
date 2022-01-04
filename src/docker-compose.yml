@@ -23,7 +23,7 @@ services:
       build: 
         context: ./products
         dockerfile: Dockerfile
-      command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+      command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
       volumes:
         - .:/products
       ports:
@@ -38,7 +38,7 @@ services:
     build:
       context: ./customers
       dockerfile: Dockerfile
-    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
     volumes:
       - .:/customers
     ports:
@@ -53,11 +53,26 @@ services:
     build:
       context: ./orders
       dockerfile: Dockerfile
-    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload"
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload"
     volumes:
       - .:/orders
     ports:
       - 8002:8002
+    depends_on:
+      - postgreDB
+    restart: always
+    networks:
+      - backend_network
+  deliveres:
+    container_name: deliveres
+    build:
+      context: ./deliveres
+      dockerfile: Dockerfile
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003 --reload"
+    volumes:
+      - .:/deliveres
+    ports:
+      - 8003:8003
     depends_on:
       - postgreDB
     restart: always
