@@ -63,16 +63,31 @@ services:
     restart: always
     networks:
       - backend_network
+  deliveries:
+    container_name: deliveries
+    build:
+      context: ./deliveries
+      dockerfile: Dockerfile
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003 --reload"
+    volumes:
+      - .:/deliveries
+    ports:
+      - 8003:8003
+    depends_on:
+      - postgreDB
+    restart: always
+    networks:
+      - backend_network
   order_details:
     container_name: order_details
     build:
       context: ./order_details
       dockerfile: Dockerfile
-    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003 --reload"
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8004 --reload"
     volumes:
       - .:/order_details
     ports:
-      - 8003:8003
+      - 8004:8004
     depends_on:
       - postgreDB
     restart: always
