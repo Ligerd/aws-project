@@ -7,8 +7,16 @@ def get_customer(db: Session, customer_id: int):
 
 
 def get_customers(db: Session, skip: int = 0, limit: int = 100, name: str = ""):
-    return db.query(models.Customer).filter(models.Customer.name.contains(name)).offset(skip).limit(limit).all()
+    return (
+        db.query(models.Customer)
+        .filter(models.Customer.name.contains(name))
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
+def get_customer_by_name(db: Session, name: str = ""):
+    return (db.query(models.Customer).filter(models.Customer.name.contains(name)).first())
 
 def create_customer(db: Session, customer: schemas.CustomerCreate):
     customer = models.Customer(**customer.dict())
@@ -19,13 +27,17 @@ def create_customer(db: Session, customer: schemas.CustomerCreate):
 
 
 def delete_customer(db: Session, customer_id: int):
-    customer = db.query(models.Customer).filter(models.Customer.id == customer_id).first()
+    customer = (
+        db.query(models.Customer).filter(models.Customer.id == customer_id).first()
+    )
     db.delete(customer)
     db.commit()
     return True
 
 
 def update_customer(db: Session, customer_id: int, customer: schemas.CustomerCreate):
-    db.query(models.Customer).filter(models.Customer.id == customer_id).update(customer.__dict__)
+    db.query(models.Customer).filter(models.Customer.id == customer_id).update(
+        customer.__dict__
+    )
     db.commit()
     return customer

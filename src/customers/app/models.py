@@ -11,3 +11,4 @@ class Customer(Base):
     surname = Column(String, index=True)
     location = Column(String, index=True)
     contact = Column(String, index=True)
+    password = Column(String, index=True)
