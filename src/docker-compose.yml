@@ -93,6 +93,21 @@ services:
     restart: always
     networks:
       - backend_network
+  carts:
+    container_name: carts
+    build:
+      context: ./carts
+      dockerfile: Dockerfile
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload"
+    volumes:
+      - .:/carts
+    ports:
+      - 8005:8005
+    depends_on:
+      - postgreDB
+    restart: always
+    networks:
+      - backend_network
 volumes:
   postgres-data:
 

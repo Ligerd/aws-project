@@ -1,7 +1,8 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, Enum
 from sqlalchemy.orm import relationship
-
+import enum
 from .database import Base
+
 
 class Customer(Base):
     __tablename__ = "Customer"
@@ -12,3 +13,4 @@ class Customer(Base):
     location = Column(String, index=True)
     contact = Column(String, index=True)
     password = Column(String, index=True)
+    role = Column(String)
