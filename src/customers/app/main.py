@@ -76,6 +76,8 @@ async def update_customer(
     db: Session = Depends(get_db),
     user=Depends(auth_handler.auth_wrapper),
 ):
+
+    print(customer.__dict__)
     customer.password = auth_handler.get_password_hash(customer.password)
     crud.update_customer(db=db, customer_id=customer_id, customer=customer)
     return customer
@@ -88,5 +90,5 @@ def login(auth_details: schemas.AuthDetails, db: Session = Depends(get_db)):
         not auth_handler.verify_password(auth_details.password, user.password)
     ):
         raise HTTPException(status_code=401, detail="Invalid username and/or password")
-    token = auth_handler.encode_token(user.id)
+    token = auth_handler.encode_token(user.id, user.role)
     return {"token": token}

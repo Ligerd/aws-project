@@ -2,13 +2,13 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-
 class CustomerBase(BaseModel):
     name: str
     surname: str
     location: str
     contact: str
     password: str
+    role: str
 
 
 class CustomerSearch(CustomerBase):
@@ -40,3 +40,4 @@ class CustomerFront(BaseModel):
     surname: str
     location: str
     contact: str
+    role: str

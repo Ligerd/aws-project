@@ -3,17 +3,17 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class OrderBase(BaseModel):
+class CartBase(BaseModel):
     customerId: int
-    orderedProducts: list[int]
+    orderedProducts: list
     totalPrice: float
 
 
-class OrderCreate(OrderBase):
+class CartCreate(CartBase):
     pass
 
 
-class Order(OrderCreate):
+class Cart(CartCreate):
     id: int
 
     class Config:
