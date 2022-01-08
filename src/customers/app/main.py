@@ -64,11 +64,8 @@ def delete_customer(
 
 @app.post("/register/", response_model=schemas.CustomerFront)
 def create_customer(customer: schemas.CustomerCreate, db: Session = Depends(get_db)):
-    # ewentualnie tutaj wypadało by zapisywać hash do bazy a nie password
-    customer = crud.create_customer(db=db, customer=customer)
-    print(auth_handler.get_password_hash(customer.password))
     customer.password = auth_handler.get_password_hash(customer.password)
-    print(customer)
+    customer = crud.create_customer(db=db, customer=customer)
     return schemas.CustomerFront(**customer.__dict__)
 
 
@@ -79,6 +76,7 @@ async def update_customer(
     db: Session = Depends(get_db),
     user=Depends(auth_handler.auth_wrapper),
 ):
+    customer.password = auth_handler.get_password_hash(customer.password)
     crud.update_customer(db=db, customer_id=customer_id, customer=customer)
     return customer
 
