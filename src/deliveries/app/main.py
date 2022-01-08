@@ -1,4 +1,5 @@
 from typing import List
+from .utils import AuthHandler
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
@@ -8,6 +9,7 @@ from .database import SessionLocal, engine
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+auth_handler = AuthHandler()
 
 # Dependency
 def get_db():
@@ -19,7 +21,7 @@ def get_db():
 
 
 @app.get("/")
-def read_root():
+def read_root(user=Depends(auth_handler.auth_wrapper)):
     return {"Hello": "It's delivery service!"}
 
 

@@ -9,7 +9,7 @@ from .utils import AuthHandler
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-users = []
+
 
 auth_handler = AuthHandler()
 # Dependency
