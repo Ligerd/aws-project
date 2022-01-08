@@ -40,22 +40,17 @@ const Home = () => {
 
   return (
     <div style={{
-      width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column',
+      width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
     }}
     >
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ mr: 2, display: { xs: 'flex', md: 'flex' } }}
-            >
-              <Link to="/">
-                <img className="logo" src={logo} alt="Logo" />
-              </Link>
-            </Typography>
+
+            <Link style={{ alignSelf: 'center' }} to="/">
+              <img className="logo" src={logo} alt="Logo" />
+            </Link>
+
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
               {pages.map((page) => (
                 <Button

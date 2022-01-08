@@ -14,4 +14,6 @@ code {
 
 img.logo {
   width: 150px;
+  align-self: center;
+  /* border: 2px solid red; */
 }
