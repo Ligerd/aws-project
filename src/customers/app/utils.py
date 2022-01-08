@@ -13,7 +13,7 @@ class AuthHandler():
         return self.pwd_context.hash(password)
 
     def verify_password(self, plain_password, db_password):
-        return self.pwd_context.verify(plain_password, self.get_password_hash(db_password))
+        return self.pwd_context.verify(plain_password, db_password)
 
     def encode_token(self, user_id):
         payload = {

@@ -66,6 +66,9 @@ def delete_customer(
 def create_customer(customer: schemas.CustomerCreate, db: Session = Depends(get_db)):
     # ewentualnie tutaj wypadało by zapisywać hash do bazy a nie password
     customer = crud.create_customer(db=db, customer=customer)
+    print(auth_handler.get_password_hash(customer.password))
+    customer.password = auth_handler.get_password_hash(customer.password)
+    print(customer)
     return schemas.CustomerFront(**customer.__dict__)
 
 
