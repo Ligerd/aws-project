@@ -32,6 +32,7 @@ class AuthDetails(BaseModel):
 
 
 class AuthReturn(BaseModel):
+    user_id: int
     token: str
 
 

@@ -91,4 +91,4 @@ def login(auth_details: schemas.AuthDetails, db: Session = Depends(get_db)):
     ):
         raise HTTPException(status_code=401, detail="Invalid username and/or password")
     token = auth_handler.encode_token(user.id, user.role)
-    return {"token": token}
+    return {"user_id": user.id, "token": token}

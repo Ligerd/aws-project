@@ -10,10 +10,10 @@ VALUES ('BMW', 'x3', 'Sedan', 40000 , 20, 2, 'Deutschland'),
        ('Mazda', '6', 'Kombi', 50000, 45, 12, 'Japan');
 
 
-INSERT INTO "Customer" (name, surname, location, contact)
-VALUES ('Test1', 'Test1', 'Test_location', '57324234'),
-       ('Test2', 'Test3', 'Test_location2', '27324234'),
-       ('Test2', 'Test3', 'Test_location2', '77324234');
+INSERT INTO "Customer" (name, surname, location, contact, role)
+VALUES ('Test1', 'Test1', 'Test_location', '57324234', 'admin'),
+       ('Test2', 'Test3', 'Test_location2', '27324234','admin'),
+       ('Test2', 'Test3', 'Test_location2', '77324234','user');
 
 
 INSERT INTO "OrderDetails" ("orderDate", "shipmentDate","shipmentStatus")
