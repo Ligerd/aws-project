@@ -10,7 +10,13 @@ from fastapi.middleware.cors import CORSMiddleware
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 auth_handler = AuthHandler()
@@ -78,8 +84,6 @@ async def update_customer(
     db: Session = Depends(get_db),
     user=Depends(auth_handler.auth_wrapper),
 ):
-
-    print(customer.__dict__)
     customer.password = auth_handler.get_password_hash(customer.password)
     crud.update_customer(db=db, customer_id=customer_id, customer=customer)
     return customer
