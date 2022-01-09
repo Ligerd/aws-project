@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
+import UserService from '../../services/userService/userService';
+
 import logo from '../../components/img/lada.png';
 import './home.css';
 
@@ -21,6 +23,8 @@ const pages = [
   { name: 'Kontakt', path: 'contact' },
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const userService = new UserService();
 
 const Home = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -38,6 +42,14 @@ const Home = () => {
     setAnchorElUser(null);
   };
 
+  useEffect(() => {
+    const login = async () => {
+      const response = await userService.login({ name: 'admin', password: 'admin' });
+      console.log(response);
+    };
+
+    login();
+  }, []);
   return (
     <div style={{
       width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
