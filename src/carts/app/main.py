@@ -28,7 +28,7 @@ def read_root(user=Depends(auth_handler.auth_wrapper)):
 
 @app.get("/carts/", response_model=schemas.Cart)
 def get_cart(db: Session = Depends(get_db), user=Depends(auth_handler.auth_wrapper)):
-    customer_id = user.id
+    customer_id = user.get("id")
     cart = crud.get_cart_by_customer_id(db, customer_id=customer_id)
     if cart is None:
         cart = {"customerId": customer_id,
@@ -40,7 +40,7 @@ def get_cart(db: Session = Depends(get_db), user=Depends(auth_handler.auth_wrapp
 
 @app.put("/carts/products/{product_id}", response_model=schemas.CartCreate)
 async def add_product_to_cart(product_id: int, db: Session = Depends(get_db), user=Depends(auth_handler.auth_wrapper)):
-    customer_id = user.id
+    customer_id = user.get("id")
     cart = crud.get_cart_by_customer_id(db, customer_id=customer_id)
     if cart is None:
         cart = {"customerId": customer_id,
@@ -53,5 +53,5 @@ async def add_product_to_cart(product_id: int, db: Session = Depends(get_db), us
 
 @app.delete("/carts/}")
 def clear_cart(db: Session = Depends(get_db), user=Depends(auth_handler.auth_wrapper)):
-    customer_id = user.id
+    customer_id = user.get("id")
     return crud.clear_cart_by_customer_id(db, customer_id=customer_id)

@@ -58,12 +58,12 @@ az container create \
 
 az container create \
   --resource-group WebShop\
-  --name customers\
-  --image jkorczauzrereg.azurecr.io/webshop/customers:v1\
+  --name carts\
+  --image jkorczauzrereg.azurecr.io/webshop/carts:v1\
   --cpu 1\
   --memory 1\
   --ports 80\
-  --dns-name-label webshopcustomers\
+  --dns-name-label webshopcarts\
   --registry-login-server jkorczauzrereg.azurecr.io\
   --registry-username jkorczauzrereg\
   --registry-password +KOepV3qOTBhe8yxzB5VQf6FsfRVU1tq
