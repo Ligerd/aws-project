@@ -29,3 +29,11 @@ Zespół w składzie:
 - 
 ### Baza danych
 - PostgreSQL
+
+
+http://webshopcarts.northeurope.azurecontainer.io/
+http://webshopproducts.northeurope.azurecontainer.io/
+http://webshoporderdetails.northeurope.azurecontainer.io/
+http://webshopdeliveries.northeurope.azurecontainer.io/
+http://webshoporders.northeurope.azurecontainer.io/
+http://webshopcustomers.northeurope.azurecontainer.io/
