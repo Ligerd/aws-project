@@ -17,7 +17,7 @@ const ProductList = () => {
   const [products, setProducts] = useState<ProductData[]>([]);
   const productService = new ProductService();
   useEffect(() => {
-    const login = async () => {
+    const getProducts = async () => {
       const products = await productService.getProducts();
       if (products) {
         setProducts(products);
@@ -25,7 +25,7 @@ const ProductList = () => {
       console.log(products);
     };
 
-    login();
+    getProducts();
   }, []);
 
   const handleChange = (setFun: Function) => (event: React.ChangeEvent<HTMLInputElement>) => {
