@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
@@ -13,9 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
 import ProductService from '../../services/productService/productService';
-
 import logo from '../../components/img/lada.png';
 import './home.css';
+import { removeValueFromLocalStorage, LocalStorageKeys } from '../../utils/localStorage/localStorage';
 
 const pages = [
   { name: 'Strona główna', path: '' },
@@ -24,10 +24,12 @@ const pages = [
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const productService = new ProductService();
-
-const Home = () => {
+export interface HomeProps {
+  username?: string;
+}
+const Home = ({ username }: HomeProps) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -66,34 +68,43 @@ const Home = () => {
                 </Button>
               ))}
             </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={() => {}}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+            <Box sx={{
+              flexGrow: 0, display: { xs: 'flex', md: 'flex' },
+            }}
+            >
+              {username
+                ? (
+                  <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
+                    Witaj
+                    {' '}
+                    {username}
+                    !
+                    {' '}
+                    <Button
+                      onClick={() => {
+                        removeValueFromLocalStorage(LocalStorageKeys.TOKEN);
+                        window.location.reload();
+                      }}
+                      sx={{
+                        m: 0, p: 0, color: 'white',
+                      }}
+
+                    >
+                      <LogoutIcon />
+                    </Button>
+                  </div>
+                )
+
+                : (
+                  <Button
+                    onClick={() => { navigate('/login'); }}
+                    sx={{
+                      m: 0, p: 0, color: 'white',
+                    }}
+                  >
+                    Zaloguj się
+                  </Button>
+                )}
             </Box>
           </Toolbar>
         </Container>

@@ -1,9 +1,12 @@
 import { useState } from 'react';
 
-function useLocalStorage(key: string, initialValue: string) {
+// eslint-disable-next-line import/prefer-default-export
+export function useLocalStorage(key: string, initialValue: string = '') {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = window.localStorage.getItem(key);
+      console.log(item);
+
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.log(error);
@@ -20,5 +23,6 @@ function useLocalStorage(key: string, initialValue: string) {
       console.log(error);
     }
   };
+
   return [storedValue, setValue];
 }

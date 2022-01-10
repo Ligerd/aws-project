@@ -6,11 +6,15 @@ import InputLabel from '@mui/material/InputLabel';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import jwt from 'jsonwebtoken';
 import UserService from '../../services/userService/userService';
-
 import './loginPage.css';
 
-const LoginPage = () => {
+export interface LoginPageProps {
+  setUsername: Function
+}
+
+const LoginPage = ({ setUsername }: LoginPageProps) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -24,6 +28,11 @@ const LoginPage = () => {
   const loginButtonOnClick = async () => {
     const response = await userService.login({ name, password });
     if (response?.token) {
+      const userInfo = await userService.getUserInfo(response.user_id);
+      if (userInfo) {
+        setUsername(userInfo.name);
+      }
+
       navigate('/');
     }
   };

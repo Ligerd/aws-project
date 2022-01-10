@@ -8,7 +8,7 @@ export interface LoginResponse {
     token: string;
 }
 
-export interface RegisterData {
+export interface UserData {
     name: string;
     surname: string;
     location: string;
