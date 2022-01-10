@@ -57,6 +57,20 @@ az container show \
 
 cd frontend
 docker-compose build
-docker tag src_products jkorczauzrereg.azurecr.io/webshop/products:v1
-docker push jkorczauzrereg.azurecr.io/webshop/products:v1
+docker tag frontend_frontend jkorczauzrereg.azurecr.io/webshop/frontend:v1
+docker push jkorczauzrereg.azurecr.io/webshop/frontend:v1
+
+az container create \
+  --resource-group WebShop\
+  --name frontend\
+  --image jkorczauzrereg.azurecr.io/webshop/frontend:v1\
+  --cpu 1\
+  --memory 1\
+  --ports 80\
+  --dns-name-label webshopfrontend\
+  --registry-login-server jkorczauzrereg.azurecr.io\
+  --registry-username jkorczauzrereg\
+  --registry-password $AZUREREG_PASSWORD
+
+# az container delete
 
