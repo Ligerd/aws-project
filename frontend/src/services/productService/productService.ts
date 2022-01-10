@@ -1,29 +1,41 @@
 import axios, { AxiosInstance } from 'axios';
-
-export interface LoginData {
-  name: string;
-  password: string;
-}
+import { getValueFromLocalStorage, LocalStorageKeys } from '../../utils/localStorage/localStorage';
+import { ProductData } from './productServiceInterfaces';
 
 export default class ProductService {
   HTTP: AxiosInstance;
 
   constructor() {
     this.HTTP = axios.create({
-      baseURL: 'http://localhost:8001/',
+      baseURL: 'http://webshopproducts.northeurope.azurecontainer.io/',
     });
   }
 
-    login = async (username: string, password: string) => {
+    getProducts = async () => {
+      const token = getValueFromLocalStorage(LocalStorageKeys.TOKEN);
+
       try {
-        const loginData: LoginData = {
-          name: username,
-          password,
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await axios.post('login', loginData);
+        const response = await this.HTTP.get<ProductData[]>('products', config);
         return response?.data;
-      } catch (err) {
-        console.error(err);
+      } catch (err: any) {
+        if (err?.response) {
+          console.log(err.response.data, token);
+          console.log(err.response.status);
+        }
+      }
+    }
+
+    addProduct = async () => {
+      try {
+        const s = 2;
+      } catch (err: any) {
+        if (err?.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+        }
       }
     }
 }

@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate, Outlet, Link } from 'react-router-dom';
-import UserService from '../../services/userService/userService';
+import ProductService from '../../services/productService/productService';
 
 import logo from '../../components/img/lada.png';
 import './home.css';
@@ -24,7 +24,7 @@ const pages = [
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const userService = new UserService();
+const productService = new ProductService();
 
 const Home = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -42,14 +42,6 @@ const Home = () => {
     setAnchorElUser(null);
   };
 
-  useEffect(() => {
-    const login = async () => {
-      const response = await userService.login({ name: 'admin', password: 'admin' });
-      console.log(response);
-    };
-
-    login();
-  }, []);
   return (
     <div style={{
       width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
