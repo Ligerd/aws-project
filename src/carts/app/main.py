@@ -63,7 +63,7 @@ async def add_product_to_cart(
         )
 
 
-@app.delete("/carts/}")
+@app.delete("/carts/")
 def clear_cart(db: Session = Depends(get_db), user=Depends(auth_handler.auth_wrapper)):
     customer_id = user.get("user_id")
     return crud.clear_cart_by_customer_id(db, customer_id=customer_id)
