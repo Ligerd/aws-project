@@ -22,66 +22,102 @@ services:
       container_name: products
       build: 
         context: ./products
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile_local
+      command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
       volumes:
         - .:/products
       ports:
-        - 80:80
+        - 8000:8000
       depends_on:
         - postgreDB
+      env_file:
+        passw.env
+      restart: always
+      networks:
+        - backend_network
   customers:
     container_name: customers
     build:
       context: ./customers
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_local
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
     volumes:
       - .:/customers
     ports:
-      - 80:80
+      - 8001:8001
+    depends_on:
+      - postgreDB
+    env_file:
+      passw.env
+    restart: always
     networks:
       - backend_network
   orders:
     container_name: orders
     build:
       context: ./orders
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_local
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8002 --reload"
     volumes:
       - .:/orders
     ports:
-      - 80:80
+      - 8002:8002
+    depends_on:
+      - postgreDB
+    env_file:
+      passw.env
+    restart: always
     networks:
       - backend_network
   deliveries:
     container_name: deliveries
     build:
       context: ./deliveries
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_local
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003 --reload"
     volumes:
       - .:/deliveries
     ports:
-      - 80:80
+      - 8003:8003
+    depends_on:
+      - postgreDB
+    env_file:
+      passw.env
+    restart: always
     networks:
       - backend_network
   order_details:
     container_name: order_details
     build:
       context: ./order_details
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_local
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8004 --reload"
     volumes:
       - .:/order_details
     ports:
-      - 80:80
+      - 8004:8004
+    depends_on:
+      - postgreDB
+    env_file:
+      passw.env
+    restart: always
     networks:
       - backend_network
   carts:
     container_name: carts
     build:
       context: ./carts
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_local
+    command: bash -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload"
     volumes:
       - .:/carts
     ports:
-      - 80:80
+      - 8005:8005
+    depends_on:
+      - postgreDB
+    env_file:
+      passw.env
+    restart: always
     networks:
       - backend_network
 volumes:
