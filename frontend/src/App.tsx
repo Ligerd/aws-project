@@ -15,9 +15,12 @@ import LoginPage from './pages/loginPage/loginPage';
 import ProductList from './pages/productList/productList';
 import UserService from './services/userService/userService';
 import ProductPage from './pages/productPage/productPage';
+import CartDetails from './pages/cartDetails/cartDetails';
+import OrderList from './pages/orderList/orderList';
 
 function App() {
   const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState(0);
   const [userRole, setUserRole] = useState('');
   const userService = new UserService();
   useEffect(() => {
@@ -29,6 +32,7 @@ function App() {
         if (userInfo) {
           setUsername(userInfo.name);
           setUserRole(userInfo.role);
+          setUserId((tokenInfo as any)?.sub.user_id);
         }
       }
     };
@@ -43,7 +47,8 @@ function App() {
             <Route path="aboutus" element={<ItemDetails />} />
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<LoginPage setUsername={setUsername} setUserRole={setUserRole} />} />
-            <Route path="cart" element={<PrivateRoute><Contact /></PrivateRoute>} />
+            <Route path="cart" element={<PrivateRoute userRole={userRole} userRoute><CartDetails userId={userId} userRole={userRole} /></PrivateRoute>} />
+            <Route path="orders" element={<PrivateRoute><OrderList userRole={userRole} /></PrivateRoute>} />
             <Route path="product" element={<PrivateRoute userRole={userRole} adminRoute><ProductPage /></PrivateRoute>} />
           </Route>
         </Routes>

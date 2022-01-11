@@ -26,6 +26,7 @@ export default class CartService {
           console.log(err.response.status);
         }
       }
+      return undefined;
     }
 
     addToCart = async (productId: number) => {
@@ -61,5 +62,6 @@ export default class CartService {
           console.log(err.response.status);
         }
       }
+      return undefined;
     }
 }

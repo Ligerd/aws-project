@@ -19,10 +19,11 @@ import { removeValueFromLocalStorage, LocalStorageKeys } from '../../utils/local
 
 const pages = [
   { name: 'Strona główna', path: '' },
+  { name: 'Koszyk', path: 'cart', for: ['user'] },
   { name: 'O nas', path: 'aboutus' },
   { name: 'Kontakt', path: 'contact' },
+  { name: 'Zamówienia', path: 'orders', for: ['user', 'admin'] },
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export interface HomeProps {
   username?: string;
@@ -60,15 +61,21 @@ const Home = ({ username, userRole }: HomeProps) => {
             </Link>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page.path}
-                  onClick={() => { switchPage(page.path); }}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {page.name}
-                </Button>
-              ))}
+              {pages.reduce((filtered: React.ReactElement[], page) => {
+                if (page.for && (!userRole || !page.for.includes(userRole))) {
+                  return filtered;
+                }
+                filtered.push(
+                  <Button
+                    key={page.path}
+                    onClick={() => { switchPage(page.path); }}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page.name}
+                  </Button>,
+                );
+                return filtered;
+              }, [])}
             </Box>
             <Box sx={{
               flexGrow: 0, display: { xs: 'flex', md: 'flex' },

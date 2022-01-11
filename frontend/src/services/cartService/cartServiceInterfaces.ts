@@ -1,6 +1,6 @@
 export interface CartData {
   customerId: number,
-  orderedProducts: string[],
+  orderedProducts: number[],
   totalPrice: number,
   id: number
 }

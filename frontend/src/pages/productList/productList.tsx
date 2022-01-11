@@ -10,6 +10,7 @@ import { Delete, Edit } from '@mui/icons-material';
 
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ProductService from '../../services/productService/productService';
 import { ProductData } from '../../services/productService/productServiceInterfaces';
 import './productList.css';
@@ -29,6 +30,7 @@ const ProductList = ({ username, userRole }: ProductListProps) => {
   const isAdmin = userRole === 'admin';
   const productService = new ProductService();
   const cartService = new CartService();
+
   const getProducts = async () => {
     const products = await productService.getProducts();
     if (products) {
@@ -37,15 +39,24 @@ const ProductList = ({ username, userRole }: ProductListProps) => {
     console.log(products);
   };
 
+  const getCart = async () => {
+    const cart = await cartService.getCart();
+    if (cart?.orderedProducts) {
+      setCurrentCart(cart.orderedProducts);
+    }
+    console.log(cart);
+  };
+
   useEffect(() => {
     getProducts();
+    getCart();
   }, []);
 
   const addToCart = (id: number) => async () => {
     const response = await cartService.addToCart(id);
     if (response) {
       console.log(response);
-      // setCurrentCart(response.orderedProducts);
+      setCurrentCart(response.orderedProducts);
     }
   };
 
@@ -75,13 +86,15 @@ const ProductList = ({ username, userRole }: ProductListProps) => {
         </>
       );
     }
-    return true ? (
+    const isInCart = currentCart.find((elem) => elem === row.id);
+    return isInCart ? (
+      <Button variant="contained" disabled>
+        W koszyku
+      </Button>
+
+    ) : (
       <Button variant="contained" onClick={addToCart(row.id)} endIcon={<AddIcon />}>
         Dodaj
-      </Button>
-    ) : (
-      <Button variant="contained" endIcon={<AddIcon />} disabled>
-        W koszyku
       </Button>
     );
   };
@@ -109,10 +122,14 @@ const ProductList = ({ username, userRole }: ProductListProps) => {
 
           }}
           >
-            {isAdmin && (
-            <Button variant="contained" endIcon={<AddIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('product'); }}>
-              Dodaj nowy pojazd
-            </Button>
+            {isAdmin ? (
+              <Button variant="contained" endIcon={<AddIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('product'); }}>
+                Dodaj nowy pojazd
+              </Button>
+            ) : (
+              <Button variant="contained" endIcon={<ShoppingCartIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('cart'); }}>
+                Przejdź do koszyka
+              </Button>
             )}
           </div>
 
