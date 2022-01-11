@@ -11,10 +11,11 @@ import UserService from '../../services/userService/userService';
 import './loginPage.css';
 
 export interface LoginPageProps {
-  setUsername: Function
+  setUsername: Function,
+  setUserRole: Function
 }
 
-const LoginPage = ({ setUsername }: LoginPageProps) => {
+const LoginPage = ({ setUsername, setUserRole }: LoginPageProps) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const LoginPage = ({ setUsername }: LoginPageProps) => {
       const userInfo = await userService.getUserInfo(response.user_id);
       if (userInfo) {
         setUsername(userInfo.name);
+        setUserRole(userInfo.role);
       }
 
       navigate('/');

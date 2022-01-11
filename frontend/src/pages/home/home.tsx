@@ -26,8 +26,10 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export interface HomeProps {
   username?: string;
+  userRole?: string;
 }
-const Home = ({ username }: HomeProps) => {
+
+const Home = ({ username, userRole }: HomeProps) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();

@@ -6,4 +6,5 @@ export interface ProductData {
     quantityInStock: number;
     totalQuantitySold: number;
     manufacturer: string;
+    id: number;
   }

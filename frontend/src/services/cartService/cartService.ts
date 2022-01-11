@@ -35,7 +35,7 @@ export default class CartService {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await this.HTTP.get<CartData[]>(`carts/products/${productId}`, config);
+        const response = await this.HTTP.put<CartData>(`carts/products/${productId}`, undefined, config);
         return response?.data;
       } catch (err: any) {
         if (err?.response) {
@@ -43,6 +43,7 @@ export default class CartService {
           console.log(err.response.status);
         }
       }
+      return undefined;
     }
 
     clearCart = async () => {
