@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import {
   Box, FormControl, Input, InputLabel,
 } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -17,9 +17,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import ProductService from '../../services/productService/productService';
 import { ProductData } from '../../services/productService/productServiceInterfaces';
-import './cartDetails.css';
+import './orderDetails.css';
 import CartService from '../../services/cartService/cartService';
 import OrderService from '../../services/orderService/orderService';
+import { FullOrderData } from '../../services/orderService/orderServiceInterfaces';
 
 export interface ProductListProps {
   userRole?: string;
@@ -30,7 +31,7 @@ const handleChange = (setFun: Function) => (event: React.ChangeEvent<HTMLInputEl
   setFun(event.target.value);
 };
 
-const CartDetails = ({ userRole, userId }: ProductListProps) => {
+const OrderDetails = ({ userRole, userId }: ProductListProps) => {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [currentCart, setCurrentCart] = useState<number[]>([]);
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -38,77 +39,41 @@ const CartDetails = ({ userRole, userId }: ProductListProps) => {
   const [postCode, setPostCode] = useState('');
   const [street, setStreet] = useState('');
   const [houseNumber, setHouseNumber] = useState('');
+  const [shipmentStatus, setShipmentStatus] = useState('');
   const navigate = useNavigate();
   const isAdmin = userRole === 'admin';
   const productService = new ProductService();
   const cartService = new CartService();
   const orderService = new OrderService();
+  const location = useLocation();
+  const fullOrder: FullOrderData = location?.state?.fullOrderData;
 
   const getProducts = async (productIds: number[]) => {
     const products = await productService.getProducts();
     if (products) {
       setProducts(products.filter((elem) => productIds.includes(elem.id)));
     }
-    console.log(products);
+    console.log(products, 'sdaas23543345665');
   };
-  const getCart = async () => {
-    const cart = await cartService.getCart();
-    if (cart?.orderedProducts && cart?.totalPrice) {
-      setCurrentCart(cart.orderedProducts);
-      setCurrentPrice(cart.totalPrice);
-      await getProducts(cart.orderedProducts);
-    }
-    console.log(cart);
+  const showOrder = async () => {
+    await getProducts(fullOrder.orderedProducts);
+    setCity(fullOrder.city);
+    setCurrentPrice(fullOrder.totalPrice);
+    setPostCode(fullOrder.postCode);
+    setStreet(fullOrder.street);
+    setHouseNumber(fullOrder.houseNumber);
+    setShipmentStatus(fullOrder.shipmentStatus);
   };
 
   useEffect(() => {
-    getCart();
+    showOrder();
   }, []);
 
-  const clearCart = async () => {
-    const response = await cartService.clearCart();
-    console.log(response, 'ASda');
-
-    if (response) {
-      setCurrentCart([]);
-      setProducts([]);
-      setCurrentPrice(0);
+  const updateStatus = async () => {
+    if (fullOrder) {
+      const order = await orderService.updateStatus(shipmentStatus, fullOrder);
+      navigate('/orders');
     }
-  };
-
-  const createAnOrder = async () => {
-    const order = await orderService.makeOrder({
-      customerId: userId,
-      totalPrice: currentPrice,
-      orderedProducts: currentCart,
-    }, {
-      city,
-      postCode,
-      street,
-      houseNumber,
-    });
-    await clearCart();
-    navigate('/');
-    // const response = productId ? await productService.editProduct(productId, {
-    //   name,
-    //   type,
-    //   subtype,
-    //   price: parseInt(price, 10),
-    //   quantityInStock: parseInt(quantityInStock, 10),
-    //   totalQuantitySold: parseInt(totalQuantitySold, 10),
-    //   manufacturer,
-    // }) : await productService.addProduct({
-    //   name,
-    //   type,
-    //   subtype,
-    //   price: parseInt(price, 10),
-    //   quantityInStock: parseInt(quantityInStock, 10),
-    //   totalQuantitySold: parseInt(totalQuantitySold, 10),
-    //   manufacturer,
-    // });
-    // if (response) {
-    //   navigate('/');
-    // }
   };
 
   return (
@@ -136,18 +101,12 @@ const CartDetails = ({ userRole, userId }: ProductListProps) => {
 
             </b>
           </div>
-          <h3 style={{ flex: 1 }}>Pojazdy w koszyku:</h3>
+          <h3 style={{ flex: 1 }}>Zakupione pojazdy:</h3>
           <div style={{
             flex: 1, justifyContent: 'flex-end', flexDirection: 'row', display: 'flex',
 
           }}
-          >
-
-            <Button variant="contained" endIcon={<RemoveShoppingCartIcon />} sx={{ ml: 'auto', backgroundColor: 'red' }} onClick={clearCart}>
-              Wyczyść koszyk
-            </Button>
-
-          </div>
+          />
 
         </Box>
 
@@ -185,30 +144,39 @@ const CartDetails = ({ userRole, userId }: ProductListProps) => {
         <h3>Adres dostawy:</h3>
         <FormControl variant="standard" margin="dense">
           <InputLabel htmlFor="city">Miasto</InputLabel>
-          <Input id="city" value={city} onChange={handleChange(setCity)} className="inp" />
+          <Input id="city" value={city} onChange={handleChange(setCity)} className="inp" disabled />
         </FormControl>
 
         <FormControl variant="standard" margin="dense">
           <InputLabel htmlFor="postCode">Kod pocztowy</InputLabel>
-          <Input id="postCode" type="text" value={postCode} onChange={handleChange(setPostCode)} className="inp" />
+          <Input id="postCode" type="text" value={postCode} onChange={handleChange(setPostCode)} className="inp" disabled />
         </FormControl>
 
         <FormControl variant="standard" margin="dense">
           <InputLabel htmlFor="street">Ulica</InputLabel>
-          <Input id="street" type="text" value={street} onChange={handleChange(setStreet)} className="inp" />
+          <Input id="street" type="text" value={street} onChange={handleChange(setStreet)} className="inp" disabled />
         </FormControl>
 
         <FormControl variant="standard" margin="dense">
           <InputLabel htmlFor="houseNumber">Number domu</InputLabel>
-          <Input id="houseNumber" type="text" value={houseNumber} onChange={handleChange(setHouseNumber)} className="inp" />
+          <Input id="houseNumber" type="text" value={houseNumber} onChange={handleChange(setHouseNumber)} className="inp" disabled />
         </FormControl>
 
-        <Button variant="contained" sx={{ mt: 2 }} onClick={createAnOrder}>
-          Złoż zamówienie
-        </Button>
+        {isAdmin && (
+          <>
+            <FormControl variant="standard" margin="dense">
+              <InputLabel htmlFor="shipmentStatus">Status zamówienia</InputLabel>
+              <Input id="shipmentStatus" type="text" value={shipmentStatus} onChange={handleChange(setShipmentStatus)} className="inp" />
+            </FormControl>
+            <Button variant="contained" sx={{ mt: 2 }} onClick={updateStatus}>
+              Zmień status
+            </Button>
+          </>
+        ) }
+
       </div>
     </div>
   );
 };
 
-export default CartDetails;
+export default OrderDetails;

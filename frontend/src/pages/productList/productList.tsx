@@ -105,71 +105,77 @@ const ProductList = ({ username, userRole }: ProductListProps) => {
         display: 'flex', flexDirection: 'column', alignItems: 'center',
       }}
       >
+        {username
+          ? (
+            <>
+              <Box sx={{
+                width: 1,
+                display: { xs: 'flex', md: 'flex' },
+                mb: 2,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+              >
+                <div style={{ flex: 1 }} />
+                <h3 style={{ flex: 1 }}>Lista dostępnych pojazdów:</h3>
+                <div style={{
+                  flex: 1, justifyContent: 'flex-end', flexDirection: 'row', display: 'flex',
 
-        <Box sx={{
-          width: 1,
-          display: { xs: 'flex', md: 'flex' },
-          mb: 2,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-        >
-          <div style={{ flex: 1 }} />
-          <h3 style={{ flex: 1 }}>Lista dostępnych pojazdów:</h3>
-          <div style={{
-            flex: 1, justifyContent: 'flex-end', flexDirection: 'row', display: 'flex',
-
-          }}
-          >
-            {isAdmin ? (
-              <Button variant="contained" endIcon={<AddIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('product'); }}>
-                Dodaj nowy pojazd
-              </Button>
-            ) : (
-              <Button variant="contained" endIcon={<ShoppingCartIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('cart'); }}>
-                Przejdź do koszyka
-              </Button>
-            )}
-          </div>
-
-        </Box>
-
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Marka</TableCell>
-                <TableCell align="right">Model</TableCell>
-                <TableCell align="right">Rodzaj nadwozia</TableCell>
-                <TableCell align="right">Cena</TableCell>
-                <TableCell align="right">Kraj produkcji</TableCell>
-                <TableCell align="right">Ilość dostępnych pojazdów</TableCell>
-                <TableCell align="right">{isAdmin ? 'Opcje' : 'Dodaj do koszyka'}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.map((row, idx) => (
-                <TableRow
-                  key={row.name + row.type + idx.toString()}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.type}</TableCell>
-                  <TableCell align="right">{row.subtype}</TableCell>
-                  <TableCell align="right">{row.price}</TableCell>
-                  <TableCell align="right">{row.manufacturer}</TableCell>
-                  <TableCell align="right">{row.quantityInStock}</TableCell>
-                  <TableCell align="right">
-                    {renderButton(row)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                  {isAdmin ? (
+                    <Button variant="contained" endIcon={<AddIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('product'); }}>
+                      Dodaj nowy pojazd
+                    </Button>
+                  ) : (
+                    <Button variant="contained" endIcon={<ShoppingCartIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('cart'); }}>
+                      Przejdź do koszyka
+                    </Button>
+                  )}
+                </div>
+
+              </Box>
+
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Marka</TableCell>
+                      <TableCell align="right">Model</TableCell>
+                      <TableCell align="right">Rodzaj nadwozia</TableCell>
+                      <TableCell align="right">Cena</TableCell>
+                      <TableCell align="right">Kraj produkcji</TableCell>
+                      <TableCell align="right">Ilość dostępnych pojazdów</TableCell>
+                      <TableCell align="right">{isAdmin ? 'Opcje' : 'Dodaj do koszyka'}</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {products.map((row, idx) => (
+                      <TableRow
+                        key={row.name + row.type + idx.toString()}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="right">{row.type}</TableCell>
+                        <TableCell align="right">{row.subtype}</TableCell>
+                        <TableCell align="right">{row.price}</TableCell>
+                        <TableCell align="right">{row.manufacturer}</TableCell>
+                        <TableCell align="right">{row.quantityInStock}</TableCell>
+                        <TableCell align="right">
+                          {renderButton(row)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          ) : (
+            <h3 style={{ flex: 1 }}>Zaloguj się aby skorzystać z oferty sklepu!</h3>
+          )}
       </div>
     </div>
   );

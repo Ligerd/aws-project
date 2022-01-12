@@ -15,4 +15,5 @@ export interface UserData {
     contact: string;
     password: string;
     role: string;
+    id: number;
 }

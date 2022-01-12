@@ -41,9 +41,9 @@ export default class UserService {
       return undefined;
     }
 
-    register = async (userData: UserData) => {
+    register = async (userData: Partial<UserData>, userRole = 'user') => {
       try {
-        const response = await this.HTTP.post('register', userData);
+        const response = await this.HTTP.post('register', { ...userData, role: userRole });
         return response?.data;
       } catch (err) {
         console.error(err);

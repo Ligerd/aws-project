@@ -11,54 +11,52 @@ import { Delete, Edit } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import OrderService from '../../services/orderService/orderService';
-import { OrderData } from '../../services/orderService/orderServiceInterfaces';
+import { FullOrderData } from '../../services/orderService/orderServiceInterfaces';
 import './orderList.css';
 import CartService from '../../services/cartService/cartService';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 export interface OrderListProps {
-  username?: string;
+  userId?: number;
   userRole?: string;
 }
 
-const OrderList = ({ username, userRole }: OrderListProps) => {
-  const [orders, setOrders] = useState<OrderData[]>([]);
+const OrderList = ({ userId, userRole }: OrderListProps) => {
+  const [orders, setOrders] = useState<FullOrderData[]>([]);
   const [currentCart, setCurrentCart] = useState<number[]>([]);
   const navigate = useNavigate();
   const isAdmin = userRole === 'admin';
   const orderService = new OrderService();
   const cartService = new CartService();
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const getOrders = async () => {
     const orders = await orderService.getOrders();
     if (orders) {
-      setOrders(orders);
+      if (isAdmin) setOrders(orders);
+      else setOrders(orders.filter((elem) => elem.customerId === userId));
     }
-    console.log(orders);
+    console.log(orders, userId, userRole);
   };
 
   const editOrder = (id: number) => async () => {
-    navigate('order', { state: { id } });
+    navigate('/orderDetails', { state: { fullOrderData: orders.find((elem) => elem.id === id) } });
   };
 
-  const renderButton = (row: OrderData) => {
+  const renderButton = (row: FullOrderData) => {
     if (isAdmin) {
       return (
-        <Button sx={{ mr: 2 }} variant="contained" onClick={editOrder(row.id)}>
-          <Edit />
+        <Button sx={{ mr: 2 }} variant="contained" onClick={editOrder(row.id)} endIcon={<Edit />}>
+          Zmień status
         </Button>
       );
     }
-    const isInCart = currentCart.includes(row.id);
-    return isInCart ? (
-      <Button variant="contained" endIcon={<AddIcon />} disabled>
-        W koszyku
-      </Button>
-
-    ) : (
-      <Button variant="contained" endIcon={<AddIcon />}>
-        Dodaj
+    return (
+      <Button variant="contained" onClick={editOrder(row.id)}>
+        Szczegóły
       </Button>
     );
   };
@@ -85,13 +83,7 @@ const OrderList = ({ username, userRole }: OrderListProps) => {
             flex: 1, justifyContent: 'flex-end', flexDirection: 'row', display: 'flex',
 
           }}
-          >
-            {isAdmin && (
-            <Button variant="contained" endIcon={<AddIcon />} sx={{ ml: 'auto' }} onClick={() => { navigate('order'); }}>
-              Dodaj nowy pojazd
-            </Button>
-            )}
-          </div>
+          />
 
         </Box>
 
@@ -100,12 +92,11 @@ const OrderList = ({ username, userRole }: OrderListProps) => {
             <TableHead>
               <TableRow>
                 <TableCell>Numer zamówienia</TableCell>
-                <TableCell align="right">Number zamówienia</TableCell>
                 <TableCell align="right">Cena</TableCell>
-                <TableCell align="right">Cena</TableCell>
-                <TableCell align="right">Kraj produkcji</TableCell>
-                <TableCell align="right">Ilość dostępnych pojazdów</TableCell>
-                <TableCell align="right">{isAdmin ? 'Opcje' : 'Dodaj do koszyka'}</TableCell>
+                <TableCell align="right">Status</TableCell>
+                <TableCell align="right">Adres</TableCell>
+                {isAdmin && <TableCell align="right">Id klienta</TableCell>}
+                <TableCell align="right">Opcje</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -117,7 +108,15 @@ const OrderList = ({ username, userRole }: OrderListProps) => {
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell align="right">{row.totalPrice}</TableCell>
+                  <TableCell align="right">
+                    {row.totalPrice}
+                    {' '}
+                    zł
+                  </TableCell>
+                  <TableCell align="right">{row.shipmentStatus}</TableCell>
+                  <TableCell align="right">{`${row.street} ${row.houseNumber}, ${row.postCode} ${row.city} `}</TableCell>
+                  {isAdmin && <TableCell align="right">{row.customerId}</TableCell>}
+
                   <TableCell align="right">
                     {renderButton(row)}
                   </TableCell>

@@ -13,9 +13,10 @@ import './loginPage.css';
 export interface LoginPageProps {
   setUsername: Function,
   setUserRole: Function
+  setUserId: Function
 }
 
-const LoginPage = ({ setUsername, setUserRole }: LoginPageProps) => {
+const LoginPage = ({ setUsername, setUserRole, setUserId }: LoginPageProps) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const LoginPage = ({ setUsername, setUserRole }: LoginPageProps) => {
     const response = await userService.login({ name, password });
     if (response?.token) {
       const userInfo = await userService.getUserInfo(response.user_id);
+      setUserId(response.user_id);
       if (userInfo) {
         setUsername(userInfo.name);
         setUserRole(userInfo.role);
@@ -37,6 +39,10 @@ const LoginPage = ({ setUsername, setUserRole }: LoginPageProps) => {
 
       navigate('/');
     }
+  };
+
+  const openRegistrationPage = async () => {
+    navigate('/register');
   };
 
   return (
@@ -60,7 +66,7 @@ const LoginPage = ({ setUsername, setUserRole }: LoginPageProps) => {
         <Box mt={2}>
           <Stack direction="row" spacing={2}>
             <Button variant="contained" onClick={loginButtonOnClick}>Zaloguj</Button>
-            <Button variant="contained">Rejestracja</Button>
+            <Button variant="contained" onClick={openRegistrationPage}>Rejestracja</Button>
           </Stack>
         </Box>
 

@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { getValueFromLocalStorage, LocalStorageKeys, removeValueFromLocalStorage } from '../../utils/localStorage/localStorage';
-import { OrderData, OrderDetails, AddressData } from './orderServiceInterfaces';
+import {
+  OrderData, OrderDetails, AddressData, FullOrderData,
+} from './orderServiceInterfaces';
 
 export default class OrderService {
   HTTP: AxiosInstance;
@@ -58,8 +60,27 @@ export default class OrderService {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await this.HTTP.get<OrderData[]>('orders', config);
-        return response?.data;
+        const ordersResponse = await this.HTTP.get<OrderData[]>('orders', config);
+        const orderDetailsResponse = await this.HTTPOrderDetails.get<OrderDetails[]>('order_details', config);
+        const deliveriesResponse = await this.HTTPDeliveriesDetails.get<AddressData[]>('deliveries', config);
+        const fullOrders: FullOrderData[] = [];
+        ordersResponse?.data.forEach((order) => {
+          const orderDetails = orderDetailsResponse.data;
+          const deliveries = deliveriesResponse.data;
+          const orderDetail = orderDetails.find((elem) => elem.orderId === order.id);
+          const delivery = deliveries.find((elem) => elem.orderId === order.id);
+          if (delivery && orderDetail && order) {
+            const fullOrder: FullOrderData = {
+              ...orderDetail,
+              ...delivery,
+              ...order,
+              orderDetailId: orderDetail?.id,
+              deliveryId: delivery?.id,
+            };
+            fullOrders.push(fullOrder);
+          }
+        });
+        return fullOrders;
       } catch (err: any) {
         if (err?.response) {
           console.log(err.response.data, token);
@@ -115,6 +136,32 @@ export default class OrderService {
               return deliveriesDetails.data;
             }
           }
+        }
+      } catch (err: any) {
+        if (err?.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+        }
+      }
+      return undefined;
+    }
+
+    updateStatus = async (status: string, fullOrder: FullOrderData) => {
+      const token = getValueFromLocalStorage(LocalStorageKeys.TOKEN);
+
+      try {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+
+        const deliveriesDetails = await this.HTTPOrderDetails.put<AddressData>(`order_details/${fullOrder.orderDetailId}`, {
+          shipmentStatus: status,
+          orderId: fullOrder.id,
+          orderDate: fullOrder.orderDate,
+          shipmentDate: fullOrder.shipmentDate,
+        }, config);
+        if (deliveriesDetails?.data) {
+          return deliveriesDetails.data;
         }
       } catch (err: any) {
         if (err?.response) {
