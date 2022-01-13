@@ -48,10 +48,10 @@ Architekturę tworzyliśmy korzystając z Portalu Azure oraz interfejsu konsolow
 ### Baza danych
 - PostgreSQL
 
+## Wnioski
+### Azure
+Praca z platformą Azure jest raczej wygodna. Platforma posiada dobrą dokumentację oraz pozwala na wykorzystanie 100 dolarów studentom. Praca przez Portal Azure oraz interfejs az cli jest sprawna.
 
-http://webshopcarts.northeurope.azurecontainer.io/
-http://webshopproducts.northeurope.azurecontainer.io/
-http://webshoporderdetails.northeurope.azurecontainer.io/
-http://webshopdeliveries.northeurope.azurecontainer.io/
-http://webshoporders.northeurope.azurecontainer.io/
-http://webshopcustomers.northeurope.azurecontainer.io/
+Problemami związanymi z platformą były najczęciej braki w integracji rozwiązań między sobą lub z systemem Linux (przykładowo narzędzia App Service Fabric, które rozważaliśmy). Dużo tutoriali napisane jest również z jednej perspektywy, nie tłumaczą one zasad działania, a jedynie wskazują jak stworzyć przykładowe rozwiązanie.
+
+Należy również pamiętać, że zasoby na platformie Azure są dosyć kosztowne.
