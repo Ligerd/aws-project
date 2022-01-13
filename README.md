@@ -50,7 +50,7 @@ Do orkestracji kontenerów zawięrających serwisy wykorzystano **Docker compose
 ### Frontend
 - React
 - TypeScript
-- 
+
 ### Baza danych
 - PostgreSQL
 
@@ -63,4 +63,11 @@ Problemami związanymi z platformą były najczęciej braki w integracji rozwią
 Należy również pamiętać, że zasoby na platformie Azure są dosyć kosztowne.
 
 ### Backend 
-Podczas pracy nad serwisami nie napotkaliśmy się na jakieś duże problemy. Ze wzgłedu na to, że biblioteki **FastAPI** oraz **SQLAlchemy** mają olbrzymią dokumentację oraz dużą ilość przykładów w internecie.
+Podczas pracy nad serwisami nie napotkaliśmy się na jakieś duże problemy. Ze względu na to, że biblioteki **FastAPI** oraz **SQLAlchemy** mają olbrzymią dokumentację oraz dużą ilość przykładów w internecie.
+
+### Frontend 
+Aplikacja kliencka została przygotowana w oparaciu o popularną bibliotekę **React**. Składa się ona z 4 podstawowych widoków:
+- Lista produktów - dostępna jest tylko dla zalogowanych użytkowników. Pozwala na dodawanie produktów do koszyka.
+- Koszyk - przedstawia podsumowanie zamówienia oraz umożliwia jego złożenie.
+- Lista zamówień - w przypadku zwykłych użytkowników przedstawia wszystkie złożone zamówienia wraz z ich stanem. Administratorzy widzą listę wszystkich zamówień w systemie.
+- Szczegóły zamówienia - pozwalają zapoznać się ze wszelkimi informacjami takimi jak dane adresowe klienta oraz zamówione przedmioty. Administratorzy mogą z tego poziomu aktualizować stan zamówienia.
