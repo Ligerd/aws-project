@@ -31,10 +31,16 @@ Użyliśmy bazy danych PostgreSQL, która jest udostępniana przez platformę Az
 
 Architekturę tworzyliśmy korzystając z Portalu Azure oraz interfejsu konsolowego **az cli**. W katalogu `src/azure/scripts` znajdują się skrypty oraz polecenia użyte podczas tworzenia architektury.
 
+## Backend
+Do rozwoju części serwerowej wykorzystaliśmy język Python3 w wersji 3.8. Wykorzystano bibliotekę o nazwie **FastApi** do realizacji komunikacji z klientem poprzez protokół HTTP. Była to dla nas nowa i wcześniej nie wykorzystywana biblioteka co pozwaliło nam się zapoznać i rozwinąć nasze umiętności w web-developmencie. Do komunikacji z bazą PostgreSQL użyliśmy bibilioteki **SQLAlchemy** pozwaliła on nam w latwy sposób wykonywać żądania do bazy oraz parsować wyniki do struktur danych w języku python. 
+
+Do orkestracji kontenerów zawięrających serwisy wykorzystano **Docker compose**. To narzędzie  pozwaliło nam w łatwy sposób zasymulować oraz przetestować działanie naszych serwisów  dokładnie w taki sposób jak to działa na platformie Azure. 
+
 ## Technologie:
 
 ### Konteneryzacja:
 - Docker
+- Docker compose
 
 ### Backend:
 - Python3
@@ -55,3 +61,6 @@ Praca z platformą Azure jest raczej wygodna. Platforma posiada dobrą dokumenta
 Problemami związanymi z platformą były najczęciej braki w integracji rozwiązań między sobą lub z systemem Linux (przykładowo narzędzia App Service Fabric, które rozważaliśmy). Dużo tutoriali napisane jest również z jednej perspektywy, nie tłumaczą one zasad działania, a jedynie wskazują jak stworzyć przykładowe rozwiązanie.
 
 Należy również pamiętać, że zasoby na platformie Azure są dosyć kosztowne.
+
+### Backend 
+Podczas pracy nad serwisami nie napotkaliśmy się na jakieś duże problemy. Ze wzgłedu na to, że biblioteki **FastAPI** oraz **SQLAlchemy** mają olbrzymią dokumentację oraz dużą ilość przykładów w internecie.
